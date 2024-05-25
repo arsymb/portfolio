@@ -34,6 +34,11 @@ public class IndexController {
         return "project";
     }
 
+    @GetMapping("/education")
+    public String showEducation() {
+        return "education";
+    }
+
     @GetMapping("/download-resume")
     public void downloadResume(HttpServletResponse response) {
         String title = "IndexControllerDownloadResume";

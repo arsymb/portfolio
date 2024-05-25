@@ -90,6 +90,23 @@ public class ContentController {
         }
     }
 
+    @GetMapping("/education")
+    public ResponseEntity<String> getEducationContents() {
+        String title = "ContentControllerGetEducationContents/";
+
+        getContent();
+
+        List<Map<String, Object>> educations = new ArrayList<>();
+        try {
+            educations = mapper.convertValue(content.get("educations"), new TypeReference<List<Map<String, Object>>>() {
+            });
+            return ResponseEntity.status(HttpStatus.OK).body(encode(educations));
+        } catch (Exception e) {
+            logger.warn(title + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(encode(educations));
+        }
+    }
+
     private String encode(Object objToEncode) {
         String title = "ContentControllerEncode/";
         try {
