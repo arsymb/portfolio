@@ -3,8 +3,10 @@ package com.arsymb.portfolio.controller;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -68,6 +70,23 @@ public class ContentController {
         } catch (Exception e) {
             logger.warn(title + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(encode(about));
+        }
+    }
+
+    @GetMapping("/project")
+    public ResponseEntity<String> getProjectContents() {
+        String title = "ContentControllerGetProjectContents/";
+
+        getContent();
+
+        List<Map<String, Object>> projects = new ArrayList<>();
+        try {
+            projects = mapper.convertValue(content.get("projects"), new TypeReference<List<Map<String, Object>>>() {
+            });
+            return ResponseEntity.status(HttpStatus.OK).body(encode(projects));
+        } catch (Exception e) {
+            logger.warn(title + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(encode(projects));
         }
     }
 

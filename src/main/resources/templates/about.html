@@ -31,7 +31,7 @@
                                 It was truly a blessing for me to get a job in the midst of the Covid-19 pandemic. I was
                                 accepted by an IT Services and Consultant Company, and got a Java bootcamp there for 3
                                 months. So far, Java is the main programming language that I use. <a
-                                    th:href="@{/}">Here for a list of projects I have worked on.</a><br /><br />I
+                                    th:href="@{/project}">Here for a list of projects I have worked on.</a><br /><br />I
                                 am
                                 still far from being an expert, I am aware that there are still many things I need to
                                 learn
@@ -53,7 +53,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            // Function to load AJAX content
+            // function to load AJAX content
             function loadAjaxContent() {
                 return new Promise(function (resolve, reject) {
                     $.ajax({
@@ -77,7 +77,7 @@
                 });
             }
 
-            // Load AJAX content and then display the HTML page
+            // load AJAX content and then display the HTML page
             loadAjaxContent().then(function () {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('spinner').style.display = 'none';

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments :: fr-head}" />
+
+<body>
+    <header th:replace="~{fragments :: fr-header}" />
+
+    <!-- project section design -->
+    <section class="project" id="project">
+        <div id="loading" class="d-flex justify-content-center">
+            <div id="spinner" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="content" style="display: none;">
+            <h2>Projects</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="project-container"></div>
+        </div>
+    </section>
+
+    <footer th:replace="~{fragments :: fr-footer}" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // function to load AJAX content
+            function loadAjaxContent() {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: '/contents/project',
+                        type: 'GET',
+                        dataType: 'text',
+                        success: function (res) {
+                            let data = atob(res);
+                            data = JSON.parse(data);
+
+                            // add project boxes and their contents
+                            const container = document.querySelector('#project-container');
+                            for (let i = 0; i < data.length; i++) {
+                                var htmlTxt = '<div class="col">'
+                                    + '<div class="card h-100 project-box">'
+                                    + '<div class="card-body">'
+                                    + '<h3>' + data[i]['title'] + '</h3>'
+                                    + '<p>' + data[i]['desc'] + '</p>'
+                                    + '<div class="project-layer">'
+                                    + '<h4>What I have done?</h4>'
+                                    + '<ul>';
+
+                                const tasks = data[i]['tasks'];
+                                for (let j = 0; j < tasks.length; j++) {
+                                    htmlTxt += '<li>' + tasks[j] + '</li>';
+                                }
+
+                                htmlTxt = htmlTxt + '</ul>'
+                                    + '<h4>Technology</h4>'
+                                    + '<p>' + data[i]['tech'] + '</p>'
+                                    + '</div>'
+                                    + '</div>'
+                                    + '</div>';
+
+                                container.innerHTML += htmlTxt;
+                            }
+
+                            resolve();
+                        },
+                        error: function (xhr, status, error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
+
+            // load AJAX content and then display the HTML page
+            loadAjaxContent().then(function () {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('content').style.display = 'grid';
+            }).catch(function (error) {
+                console.error('Error loading AJAX content:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>

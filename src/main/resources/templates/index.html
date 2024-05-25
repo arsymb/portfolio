@@ -46,7 +46,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            // Function to load AJAX content
+            // function to load AJAX content
             function loadAjaxContent() {
                 return new Promise(function (resolve, reject) {
                     $.ajax({
@@ -79,7 +79,7 @@
                 });
             }
 
-            // Load AJAX content and then display the HTML page
+            // load AJAX content and then display the HTML page
             loadAjaxContent().then(function () {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('spinner').style.display = 'none';
