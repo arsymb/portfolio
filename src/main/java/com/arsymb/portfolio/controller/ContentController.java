@@ -1,5 +1,6 @@
 package com.arsymb.portfolio.controller;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -104,6 +105,36 @@ public class ContentController {
         } catch (Exception e) {
             logger.warn(title + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(encode(educations));
+        }
+    }
+
+    @GetMapping("/certification")
+    public ResponseEntity<String> getCertificationContents() {
+        String title = "ContentControllerGetCertificationContents/";
+
+        getContent();
+
+        List<Map<String, Object>> certifications = new ArrayList<>();
+        try {
+            certifications = mapper.convertValue(content.get("certifications"),
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+
+            if (certifications != null && !certifications.isEmpty()) {
+                certifications.forEach(c -> {
+                    try {
+                        byte[] imgBytes = Files.readAllBytes(Paths.get(c.get("imgSrc").toString()));
+                        c.put("imgSrc", Base64.getEncoder().encodeToString(imgBytes));
+                    } catch (IOException e) {
+                        logger.warn(title + "Image Loading Loop - Error {}", e.getMessage());
+                    }
+                });
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(encode(certifications));
+        } catch (Exception e) {
+            logger.warn(title + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(encode(certifications));
         }
     }
 

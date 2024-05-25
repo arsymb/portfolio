@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments :: fr-head}" />
+
+<body>
+    <header th:replace="~{fragments :: fr-header}" />
+
+    <!-- certification section design -->
+    <section class="certification" id="certification">
+        <div id="loading" class="d-flex justify-content-center">
+            <div id="spinner" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="content" style="display: none;">
+            <h2>Certifications</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="certification-container"></div>
+        </div>
+    </section>
+
+    <footer th:replace="~{fragments :: fr-footer}" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Function to load AJAX content
+            function loadAjaxContent() {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: '/contents/certification',
+                        type: 'GET',
+                        dataType: 'text',
+                        success: function (res) {
+                            let data = atob(res);
+                            data = JSON.parse(data);
+
+                            // add certification boxes and their contents
+                            const container = document.querySelector('#certification-container');
+                            for (var i = 0; i < data.length; i++) {
+                                var htmlTxt = '<div class="col">'
+                                    + '<div class="card h-100 certification-box">'
+                                    + '<div class="card-body">'
+                                    + '<div class="certification-img">'
+                                    + '<img src="' + 'data:image/png;base64,' + data[i]['imgSrc'] + '" />'
+                                    + '</div><hr />'
+                                    + '<h5 class="fw-bold">' + data[i]['title'] + '</h5>'
+                                    + '<p>' + data[i]['issueDate'] + '</p>'
+                                    + '<p>' + data[i]['issuingOrg'] + '</p>'
+                                    + '<p>' + data[i]['credentialID'] + '</p>'
+                                    + '</div>'
+                                    + '</div>'
+                                    + '</div>';
+
+                                container.innerHTML += htmlTxt;
+                            }
+
+                            resolve();
+                        },
+                        error: function (xhr, status, error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
+
+            // Load AJAX content and then display the HTML page
+            loadAjaxContent().then(function () {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('content').style.display = 'grid';
+            }).catch(function (error) {
+                console.error('Error loading AJAX content:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>
