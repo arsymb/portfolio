@@ -1,0 +1,39 @@
+.about {
+    align-items: center;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.about-content,
+.about-img {
+    border: none;
+    background-color: transparent;
+}
+
+.about-img img {
+    width: 100%;
+}
+
+.about-content h1 {
+    color: var(--golden-slumber);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem;
+    letter-spacing: .2rem;
+    line-height: 1.2;
+    margin: 0 2rem;
+    text-align: left;
+}
+
+.about-content p {
+    color: var(--baby-blossom);
+    font-size: .8rem;
+    margin: 2rem;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.about-content p a {
+    color: var(--golden-slumber);
+    text-decoration: none
+}

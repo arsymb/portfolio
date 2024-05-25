@@ -50,6 +50,27 @@ public class ContentController {
         }
     }
 
+    @GetMapping("/about")
+    public ResponseEntity<String> getAboutContents() {
+        String title = "ContentControllerGetAboutContents/";
+
+        getContent();
+
+        Map<String, Object> about = new HashMap<>();
+        try {
+            about = mapper.convertValue(content.get("about"), new TypeReference<Map<String, Object>>() {
+            });
+            if (about != null && !about.isEmpty()) {
+                byte[] imgBytes = Files.readAllBytes(Paths.get(about.get("imgSrc").toString()));
+                about.put("imgSrc", Base64.getEncoder().encodeToString(imgBytes));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(encode(about));
+        } catch (Exception e) {
+            logger.warn(title + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(encode(about));
+        }
+    }
+
     private String encode(Object objToEncode) {
         String title = "ContentControllerEncode/";
         try {
