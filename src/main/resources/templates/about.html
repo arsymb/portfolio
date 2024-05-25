@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments :: fr-head}" />
+
+<body>
+    <header th:replace="~{fragments :: fr-header}" />
+
+    <!-- about section design -->
+    <section class="about" id="about">
+        <div id="loading" class="d-flex justify-content-center">
+            <div id="spinner" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="content" style="display: none;">
+            <div class="row d-flex align-items-center">
+                <div class="col-lg-9 mb-sm-1">
+                    <div class="card about-content" id="about-content">
+                        <div class="card-body">
+                            <h1>So, who am I?</h1>
+                            <p>Hi, my name is Arisya. I have spent the last 2+ years working as a Java developer. Most
+                                of my
+                                work is on the back-end of applications, but sometimes I also work on the front-end of
+                                web
+                                applications.<br /><br />I never thought that becoming a developer would be my career
+                                path
+                                because I originally graduated in Mathematics, which only has a few subjects related to
+                                computer science. This started in mid-2020, when I was still an unemployed fresh
+                                graduate.
+                                It was truly a blessing for me to get a job in the midst of the Covid-19 pandemic. I was
+                                accepted by an IT Services and Consultant Company, and got a Java bootcamp there for 3
+                                months. So far, Java is the main programming language that I use. <a
+                                    th:href="@{/project}">Here for a list of projects I have worked on.</a><br /><br />I
+                                am
+                                still far from being an expert, I am aware that there are still many things I need to
+                                learn
+                                in this field. However, 2+ years of experience has built me up with a lot of knowledge
+                                so
+                                that I hope to make a better contribution to the projects I work on now or in the
+                                future.</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card about-img" id="about-img"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer th:replace="~{fragments :: fr-footer}" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // function to load AJAX content
+            function loadAjaxContent() {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: '/contents/about',
+                        type: 'GET',
+                        dataType: 'text',
+                        success: function (res) {
+                            let data = atob(res);
+                            data = JSON.parse(data);
+
+                            // add image
+                            const aboutImg = document.querySelector('#about-img');
+                            aboutImg.innerHTML += '<img src="' + 'data:image/png;base64,' + data['imgSrc'] + '" />';
+
+                            resolve();
+                        },
+                        error: function (xhr, status, error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
+
+            // load AJAX content and then display the HTML page
+            loadAjaxContent().then(function () {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('content').style.display = 'grid';
+            }).catch(function (error) {
+                console.error('Error loading AJAX content:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>

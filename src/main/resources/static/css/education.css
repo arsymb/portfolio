@@ -1,0 +1,54 @@
+.education {
+    align-items: center;
+    display: block;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.education h2 {
+    color: var(--golden-slumber);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    margin: -2rem 0 3rem;
+    text-align: center;
+}
+
+.education-box {
+    background-color: transparent;
+    border-radius: 3rem;
+    box-shadow: 0 0 1rem var(--golden-slumber);
+    height: auto;
+    margin: 2rem 2rem;
+    padding: 1.5rem 3rem .5rem;
+}
+
+.timeline {
+    border-left: 0.2rem solid var(--golden-slumber);
+    list-style: none;
+    position: relative;
+}
+
+.timeline .timeline-item {
+    color: var(--golden-slumber);
+    position: relative;
+}
+
+.timeline .timeline-item p {
+    color: var(--golden-slumber) !important;
+    font-size: small;
+}
+
+.timeline .timeline-item:after {
+    display: block;
+    position: absolute;
+    top: 0;
+}
+
+.timeline .timeline-item:after {
+    background-color: var(--golden-slumber);
+    border-radius: 50%;
+    content: "";
+    height: .7rem;
+    left: -2.375rem;
+    width: .7rem;
+}

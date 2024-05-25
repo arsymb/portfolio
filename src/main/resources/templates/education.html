@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments :: fr-head}" />
+
+<body>
+    <header th:replace="~{fragments :: fr-header}" />
+
+    <!-- education section design -->
+    <section class="education" id="education">
+        <div id="loading" class="d-flex justify-content-center">
+            <div id="spinner" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="content" style="display: none;">
+            <h2>Education History</h2>
+            <div class="card education-box">
+                <div class="card-body">
+                    <ul class="timeline" id="education-container"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer th:replace="~{fragments :: fr-footer}" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Function to load AJAX content
+            function loadAjaxContent() {
+                return new Promise(function (resolve, reject) {
+
+                    $.ajax({
+                        url: '/contents/education',
+                        type: 'GET',
+                        dataType: 'text',
+                        success: function (res) {
+                            let data = atob(res);
+                            data = JSON.parse(data);
+
+                            // add formal education boxes and their contents
+                            const container = document.querySelector('#education-container');
+                            var htmlTxt = '';
+                            for (let i = 0; i < data.length; i++) {
+                                htmlTxt = htmlTxt + '<li class="timeline-item mb-5">'
+                                    + '<h5 class="fw-bold">' + data[i]['title'] + '</h5>'
+                                    + '<p class="text-muted mb-2 fw-bold">' + data[i]['date'] + '</p>'
+                                    + '<p class="text-muted">' + data[i]['institute'] + '</p>'
+                                    + '</li>';
+                            }
+                            htmlTxt += '</ul></div>';
+                            container.innerHTML += htmlTxt;
+
+                            resolve();
+                        },
+                        error: function (xhr, status, error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
+
+            // Load AJAX content and then display the HTML page
+            loadAjaxContent().then(function () {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('content').style.display = 'grid';
+            }).catch(function (error) {
+                console.error('Error loading AJAX content:', error);
+            });
+        });
+    </script>
+</body>
+
+</html>
