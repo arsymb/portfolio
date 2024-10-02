@@ -18,7 +18,7 @@
   box-shadow: 0 0 1rem var(--golden-slumber);
   color: var(--baby-blossom);
   overflow: hidden;
-  padding: 4.2rem;
+  padding: 2.5rem;
   position: relative;
   text-align: center;
   transition: .5s ease;
@@ -47,7 +47,7 @@
   height: 100%;
   justify-content: center;
   left: 0;
-  padding: 0 1rem;
+  padding: 1rem 2rem 0 1rem;
   position: absolute;
   text-align: justify;
   transform: translateY(100%);
